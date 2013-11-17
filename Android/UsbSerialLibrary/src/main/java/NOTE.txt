@@ -1,0 +1,6 @@
+Place usb-serial-for-android library source files here.
+
+1. cd ~/git
+2. git clone https://github.com/mik3y/usb-serial-for-android.git
+3. git checkout master (or git checkout c21211434047504cfa598ae129f7b43ea9a1b6c3)
+4. Copy ~/git/usb-serial-for-android/UsbSerialLibrary/src/com directory to this directory

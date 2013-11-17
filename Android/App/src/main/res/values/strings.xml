@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ArduinoLEDControl</string>
+    <string name="main_activity_name">Arduino LED Control</string>
+
+</resources>

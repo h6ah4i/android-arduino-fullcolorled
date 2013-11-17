@@ -1,0 +1,3 @@
+# Don't include usb-serial-for-android sources
+/com
+

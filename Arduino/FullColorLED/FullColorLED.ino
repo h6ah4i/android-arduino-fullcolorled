@@ -49,7 +49,7 @@ static void processCommand(const Command &cmd)
 static void doSerialRxProcess() 
 {
   if (!Serial.available())
-  return;
+    return;
 
   int c = Serial.read();
 

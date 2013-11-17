@@ -9,7 +9,7 @@ Requirements (Hardware)
 - Android device (Android 3.2+)
 - USB host cable (micro B plug - standard A receptacle)
 - USB 2.0 cable (standard A plug - standard B plug)
-- Full color LED (common anode), Resister (1 kOhm) x 3, Bread board, Jumper wires
+- Full color LED (common anode), Register (1 kOhm) x 3, Bread board, Jumper wires
 - (+5V AC adapter)
 
 Setup

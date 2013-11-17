@@ -39,9 +39,9 @@ Make the following curcuit on bread boead.
 - LED (GREEN) -> Register -> DIGITAL ~10
 - LED (BLUE) -> Register -> DIGITAL ~11
 
-Connect Android devie and Arduino board with USB cables.
+Connect Android device and Arduino board with USB cables.
 
-- Android - USB host cable - USB standard cable - Arduino UNO
+- {Android} - {USB host cable} - {USB standard cable} - {Arduino UNO}
 
 
 Command protocol

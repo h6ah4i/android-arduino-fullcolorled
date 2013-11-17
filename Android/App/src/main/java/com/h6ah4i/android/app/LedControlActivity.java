@@ -63,6 +63,9 @@ public class LedControlActivity extends Activity implements  SeekBar.OnSeekBarCh
             // find newline
             int i = sb.indexOf("\n");
             if (i < 0) {
+                i = sb.indexOf("\r");
+            }
+            if (i < 0) {
                 break;
             }
 

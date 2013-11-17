@@ -7,7 +7,9 @@
 
 // variables
 static ReceiveBuffer<32> buff;
-static Led RED(9), GREEN(10), BLUE(11);
+static Led RED(9, 1.0f);
+static Led GREEN(10, 1.0f);
+static Led BLUE(11, 1.0f);
 
 
 void setup()

@@ -28,6 +28,9 @@ class AsyncUsbSerial {
     private Thread mTxThread;
     private Thread mRxThread;
 
+    /**
+     * Circular buffer
+     */
     private static final class CircDataBuffer {
         private int mCount;
         private int mReadPos;
@@ -103,6 +106,9 @@ class AsyncUsbSerial {
         }
     }
 
+    /**
+     * Tx. worker process
+     */
     private static class TxWorker implements Runnable {
         private static final String TAG = AsyncUsbSerial.TAG + "." + TxWorker.class.getSimpleName();
         private static final int TIMEOUT = 50;
@@ -169,6 +175,9 @@ class AsyncUsbSerial {
         }
     }
 
+    /**
+     * Rx. worker process
+     */
     private static class RxWorker implements Runnable {
         private static final String TAG = AsyncUsbSerial.TAG + "." + RxWorker.class.getSimpleName();
         private static final int TIMEOUT = 50;
@@ -224,21 +233,43 @@ class AsyncUsbSerial {
         void onReceived(byte[] data, int n);
     }
 
+    /**
+     * AsyncUsbSerial constructor
+     *
+     * @param context Context object
+     * @param listener AsyncUsbSerial.EventListener instance
+     */
     public AsyncUsbSerial(Context context, EventListener listener) {
+        if (context == null)
+            throw new IllegalArgumentException("context cannot be null");
+        if (listener == null)
+            throw new IllegalArgumentException("listener cannot be null");
+
         mContext = context;
         mListener = listener;
     }
 
+    /**
+     * Open USB-Serial driver
+     */
     public  synchronized void open() {
         if (setupUSB(mContext)) {
             Log.d(TAG, "USB-Serial driver is now opened");
         }
     }
 
+    /**
+     * Gets opened state
+     *
+     * @return Whether USB-Serial driver is opened
+     */
     public synchronized boolean isOpened() {
         return (mUsbSerial != null);
     }
 
+    /**
+     * Start Tx./Rx. operation
+     */
     public synchronized void start() {
         if (!isOpened())
             throw new IllegalStateException("USB-Serial driver is not opened yet");
@@ -271,22 +302,16 @@ class AsyncUsbSerial {
         }
     }
 
-    private static void safeInterruptJoinThread(Thread thread) {
-        if (thread == null)
-            return;
-
-        thread.interrupt();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            Log.w(TAG, "Interrupted - safeInterruptJoinThread()", e);
-        }
-    }
-
+    /**
+     * Stop Tx./Rx. operation
+     */
     public synchronized void stop() {
         stopInternal();
     }
 
+    /**
+     * Close the USB-Serial driver
+     */
     public synchronized void close() {
         stopInternal();
 
@@ -297,6 +322,7 @@ class AsyncUsbSerial {
         mListener = null;
         mUsbManager = null;
     }
+
     public synchronized void writeAsync(byte[] data, int offset, int n) {
         if (mTxWorker == null)
             throw new IllegalStateException();
@@ -347,6 +373,16 @@ class AsyncUsbSerial {
         return (driver != null);
     }
 
+    private void cleanupUSB() {
+        if (mUsbSerial != null) {
+            safeCloseUsbSerial(mUsbSerial);
+            mUsbSerial = null;
+        }
+        if (mUsbManager != null) {
+            mUsbManager = null;
+        }
+    }
+
     private static void safeCloseUsbSerial(UsbSerialDriver driver)    {
         if (driver == null) {
             return;
@@ -359,13 +395,15 @@ class AsyncUsbSerial {
         }
     }
 
-    private void cleanupUSB() {
-        if (mUsbSerial != null) {
-            safeCloseUsbSerial(mUsbSerial);
-            mUsbSerial = null;
-        }
-        if (mUsbManager != null) {
-            mUsbManager = null;
+    private static void safeInterruptJoinThread(Thread thread) {
+        if (thread == null)
+            return;
+
+        thread.interrupt();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            Log.w(TAG, "Interrupted - safeInterruptJoinThread()", e);
         }
     }
 }

@@ -9,6 +9,10 @@ import java.io.UnsupportedEncodingException;
 public class LedControlActivity extends Activity implements  SeekBar.OnSeekBarChangeListener {
     private static final String TAG = LedControlActivity.class.getSimpleName();
 
+    private static final String TAG_UART_RX = "UART-RX";
+    private StringBuilder mUartRxStringBuilder;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +49,9 @@ public class LedControlActivity extends Activity implements  SeekBar.OnSeekBarCh
         }
     }
 
-    private static final String TAG_UART_RX = "UART-RX";
-    private     StringBuilder mUartRxStringBuilder;
-
     private void onDataReceivedFromUsbSerial(byte[] data, int n) {
 //        Log.d(TAG, "Data received: " + n + " [bytes]");
-        StringBuilder sb = mUartRxStringBuilder;
+        final StringBuilder sb = mUartRxStringBuilder;
 
         try {
             final String decodedStr = new String(data, 0, n, "UTF-8");
@@ -59,6 +60,7 @@ public class LedControlActivity extends Activity implements  SeekBar.OnSeekBarCh
         }
 
         while (true) {
+            // find newline
             int i = sb.indexOf("\n");
             if (i < 0) {
                 break;
